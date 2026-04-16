@@ -8,7 +8,7 @@
   "description": "Professional weight and price calculator for MDR.",
   "icons": [
     {
-      "src": "image_5.png",
+      "src": "manifesticon.png",
       "sizes": "512x512",
       "type": "image/png"
     }
