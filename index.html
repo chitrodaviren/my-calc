@@ -9,6 +9,7 @@
             --accent: #2563eb;
             --glass: rgba(255, 255, 255, 0.95);
             --grad: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            --success: #059669;
         }
 
         body { 
@@ -17,6 +18,7 @@
             background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
             background-size: 20px 20px;
             margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center;
+            padding-bottom: 120px; /* Space for the bottom grand total bar */
         }
 
         .app-container { width: 100%; max-width: 450px; animation: fadeIn 0.8s ease; }
@@ -24,8 +26,8 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .header { text-align: center; margin-bottom: 20px; }
-        .header img { width: 80px; height: 80px; border-radius: 18px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .header h1 { font-size: 1.4rem; margin: 10px 0 0; color: #1e293b; letter-spacing: -0.5px; }
+        .header img { width: 90px; height: 90px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); object-fit: cover; }
+        .header h1 { font-size: 1.4rem; margin: 12px 0 0; color: #1e293b; letter-spacing: -0.5px; font-weight: 800; }
 
         .glass-card { 
             background: var(--glass);
@@ -37,7 +39,7 @@
 
         .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
         
-        label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 6px; display: block; letter-spacing: 0.5px; }
+        label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 6px; display: block; letter-spacing: 0.5px; padding-left: 5px; }
 
         input, select { 
             width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 14px; 
@@ -50,28 +52,45 @@
         .dashboard { 
             background: var(--grad); color: white; padding: 25px; 
             border-radius: 24px; margin-top: 25px; position: relative; overflow: hidden;
+            box-shadow: 0 15px 30px rgba(15, 23, 42, 0.2);
         }
 
-        .dashboard::before {
-            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-        }
-
-        .stat-label { font-size: 0.75rem; text-transform: uppercase; opacity: 0.6; font-weight: 600; }
+        .stat-label { font-size: 0.75rem; text-transform: uppercase; opacity: 0.6; font-weight: 600; letter-spacing: 0.5px; }
         .main-price { font-size: 2.2rem; font-weight: 800; margin: 5px 0; color: #60a5fa; display: block; }
         
         .grid-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
-        .stat-val { font-weight: 700; font-size: 1.1rem; display: block; }
+        .stat-val { font-weight: 700; font-size: 1.1rem; display: block; margin-top: 2px; }
 
-        .save-btn { 
-            width: 100%; padding: 18px; background: var(--accent); color: white; border: none; 
-            border-radius: 18px; font-weight: 800; font-size: 1rem; margin-top: 20px;
-            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3); transition: all 0.2s;
+        .action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+
+        .save-btn, .clear-btn { 
+            padding: 16px; border: none; border-radius: 16px; font-weight: 800; font-size: 0.9rem;
+            cursor: pointer; transition: all 0.2s;
         }
-        .save-btn:active { transform: scale(0.96); }
+
+        .save-btn { background: var(--accent); color: white; box-shadow: 0 8px 15px rgba(37, 99, 235, 0.2); }
+        .clear-btn { background: #e2e8f0; color: #64748b; }
+        .save-btn:active, .clear-btn:active { transform: scale(0.96); }
+
+        /* Grand Total Floating Bar */
+        .grand-total-bar {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: white; border-top: 1px solid #e2e8f0;
+            padding: 20px; display: flex; justify-content: center;
+            box-shadow: 0 -10px 25px rgba(0,0,0,0.05);
+            z-index: 100;
+        }
+
+        .bar-content {
+            width: 100%; max-width: 450px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .gt-label { font-size: 0.8rem; font-weight: 800; color: #64748b; text-transform: uppercase; }
+        .gt-amount { font-size: 1.6rem; font-weight: 900; color: var(--success); }
 
         .history-pill { 
-            background: white; padding: 12px 20px; border-radius: 50px; margin-top: 10px;
+            background: white; padding: 14px 20px; border-radius: 18px; margin-bottom: 10px;
             display: flex; justify-content: space-between; align-items: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.02); border: 1px solid #edf2f7;
         }
@@ -81,51 +100,66 @@
 
 <div class="app-container">
     <div class="header">
-        <img src="image_5.png" alt="MDR Logo">
+        <img src="image_5.png" alt="MDR" onerror="this.style.display='none'">
         <h1>MDR Calculator</h1>
     </div>
 
     <div class="glass-card">
         <div class="input-row">
-            <div><label>Height (ft)</label><input type="number" id="h" placeholder="6" oninput="calculate()"></div>
-            <div><label>Sets (Pair)</label><input type="number" id="sets" value="1" oninput="calculate()"></div>
+            <div><label>Height (ft)</label><input type="number" id="h" placeholder="0" oninput="calculate()"></div>
+            <div><label>Sets (Pair)</label><input type="number" id="sets" placeholder="0" oninput="calculate()"></div>
         </div>
         <div class="input-row">
-            <div><label>Length (ft)</label><input type="number" id="l" placeholder="5" oninput="calculate()"></div>
-            <div><label>Depth (ft)</label><input type="number" id="d" placeholder="2" oninput="calculate()"></div>
+            <div><label>Length (ft)</label><input type="number" id="l" placeholder="0" oninput="calculate()"></div>
+            <div><label>Depth (ft)</label><input type="number" id="d" placeholder="0" oninput="calculate()"></div>
         </div>
         <div class="input-row">
-            <div><label>Levels</label><input type="number" id="levels" value="3" oninput="calculate()"></div>
-            <div><label>Rate / KG</label><input type="number" id="rate" value="100" oninput="calculate()"></div>
+            <div><label>Beam Levels</label><input type="number" id="levels" placeholder="0" oninput="calculate()"></div>
+            <div><label>Rate / KG (₹)</label><input type="number" id="rate" placeholder="0" oninput="calculate()"></div>
         </div>
         
         <label>Beam Thickness</label>
         <select id="beamThick" onchange="calculate()" style="margin-bottom:15px">
-            <option value="1.17">2 mm (Light Duty)</option>
-            <option value="1.46" selected>2.5 mm (Standard)</option>
-            <option value="1.75">3 mm (Heavy Duty)</option>
+            <option value="" disabled selected>Select Thickness</option>
+            <option value="1.17">2 mm (Light)</option>
+            <option value="1.46">2.5 mm (Standard)</option>
+            <option value="1.75">3 mm (Heavy)</option>
         </select>
 
         <label>Shelf Thickness</label>
         <select id="shelfThick" onchange="calculate()">
+            <option value="" disabled selected>Select Thickness</option>
             <option value="0.715">1 mm Sheet</option>
-            <option value="1.2">1.2 mm Heavy Sheet</option>
+            <option value="1.2">1.2 mm Heavy</option>
         </select>
 
         <div class="dashboard">
-            <span class="stat-label">Total Estimate (Incl. 18% GST)</span>
-            <span class="main-price" id="price_gst">₹0</span>
+            <span class="stat-label">Price Without GST</span>
+            <span class="main-price" id="price_base">₹0</span>
             
             <div class="grid-stats">
-                <div><span class="stat-label">Net Weight</span><span class="stat-val" id="w_total">0 kg</span></div>
-                <div><span class="stat-label">GST Tax</span><span class="stat-val" id="gst_amt">₹0</span></div>
+                <div><span class="stat-label">Net Weight</span><span class="stat-val" id="w_total">0.00 kg</span></div>
+                <div><span class="stat-label">GST (18%)</span><span class="stat-val" id="gst_amt">₹0</span></div>
             </div>
         </div>
 
-        <button class="save-btn" onclick="saveHistory()">Save Quotation</button>
+        <div class="action-btns">
+            <button class="clear-btn" onclick="clearForm()">Clear All</button>
+            <button class="save-btn" onclick="saveHistory()">Save Quote</button>
+        </div>
     </div>
 
-    <div id="historyList" style="margin-top:25px"></div>
+    <div class="history-section" style="margin-top:25px">
+        <h3 id="histHeader" style="display:none; font-size: 0.8rem; color: #64748b; margin-bottom:10px;">RECENT QUOTES</h3>
+        <div id="historyList"></div>
+    </div>
+</div>
+
+<div class="grand-total-bar">
+    <div class="bar-content">
+        <div class="gt-label">Grand Total<br><span style="font-size:0.6rem; opacity:0.7">Inc. All Taxes</span></div>
+        <div class="gt-amount" id="price_gst">₹0</div>
+    </div>
 </div>
 
 <script>
@@ -135,9 +169,14 @@
         const l = parseFloat(document.getElementById('l').value) || 0;
         const d = parseFloat(document.getElementById('d').value) || 0;
         const levels = parseFloat(document.getElementById('levels').value) || 0;
-        const beamKg = parseFloat(document.getElementById('beamThick').value);
-        const shelfKg = parseFloat(document.getElementById('shelfThick').value);
+        const beamKg = parseFloat(document.getElementById('beamThick').value) || 0;
+        const shelfKg = parseFloat(document.getElementById('shelfThick').value) || 0;
         const rate = parseFloat(document.getElementById('rate').value) || 0;
+
+        if (h === 0 && l === 0) {
+            resetDisplay();
+            return;
+        }
 
         let totalWeight = (((h * 0.615 * 2) + (6 * d * 0.615)) * sets) + (beamKg * l * levels * 2) + (l * d * levels * shelfKg);
         let priceBase = totalWeight * rate;
@@ -145,15 +184,37 @@
         let finalPrice = priceBase + gst;
 
         document.getElementById('w_total').innerText = totalWeight.toFixed(2) + " kg";
+        document.getElementById('price_base').innerText = "₹" + Math.round(priceBase).toLocaleString('en-IN');
         document.getElementById('gst_amt').innerText = "₹" + Math.round(gst).toLocaleString('en-IN');
         document.getElementById('price_gst').innerText = "₹" + Math.round(finalPrice).toLocaleString('en-IN');
     }
 
+    function resetDisplay() {
+        document.getElementById('w_total').innerText = "0.00 kg";
+        document.getElementById('price_base').innerText = "₹0";
+        document.getElementById('gst_amt').innerText = "₹0";
+        document.getElementById('price_gst').innerText = "₹0";
+    }
+
+    function clearForm() {
+        document.getElementById('h').value = "";
+        document.getElementById('sets').value = "";
+        document.getElementById('l').value = "";
+        document.getElementById('d').value = "";
+        document.getElementById('levels').value = "";
+        document.getElementById('rate').value = "";
+        document.getElementById('beamThick').selectedIndex = 0;
+        document.getElementById('shelfThick').selectedIndex = 0;
+        resetDisplay();
+    }
+
     function saveHistory() {
         const total = document.getElementById('price_gst').innerText;
-        const info = `${document.getElementById('h').value}'x${document.getElementById('l').value}'`;
-        if(!document.getElementById('h').value) return;
+        const h = document.getElementById('h').value;
+        const l = document.getElementById('l').value;
+        if(!h || total === "₹0") return;
         
+        const info = `${h}'x${l}' Rack`;
         let history = JSON.parse(localStorage.getItem('rackHistory')) || [];
         history.unshift({ info, total, date: new Date().toLocaleDateString() });
         localStorage.setItem('rackHistory', JSON.stringify(history));
@@ -163,7 +224,9 @@
     function renderHistory() {
         let history = JSON.parse(localStorage.getItem('rackHistory')) || [];
         const list = document.getElementById('historyList');
-        list.innerHTML = history.slice(0, 3).map(i => `
+        const header = document.getElementById('histHeader');
+        if(history.length > 0) header.style.display = "block";
+        list.innerHTML = history.slice(0, 5).map(i => `
             <div class="history-pill">
                 <span style="font-weight:700; color:#1e293b">${i.info}</span>
                 <span style="font-weight:800; color:var(--accent)">${i.total}</span>
