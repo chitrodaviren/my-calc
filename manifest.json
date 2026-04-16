@@ -1,15 +1,17 @@
 {
-  "name": "Product Calculator",
-  "short_name": "Calc",
+  "name": "Product Calculator Pro",
+  "short_name": "ProdCalc",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#f0f2f5",
-  "theme_color": "#1a73e8",
+  "background_color": "#f4f7f6",
+  "theme_color": "#007bff",
+  "description": "Calculates product costs and saves history.",
   "icons": [
     {
       "src": "https://cdn-icons-png.flaticon.com/512/2344/2344132.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
