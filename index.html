@@ -3,217 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RackMaster Pro</title>
-    <link rel="manifest" href="manifest.json">
+    <title>MDR Elite</title>
     <style>
         :root {
-            --primary: #2563eb;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text: #1e293b;
-            --accent: #f1f5f9;
+            --accent: #2563eb;
+            --glass: rgba(255, 255, 255, 0.95);
+            --grad: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
         }
 
         body { 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            background: var(--bg); 
-            color: var(--text);
-            margin: 0; 
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            font-family: 'Inter', -apple-system, sans-serif; 
+            background: #f1f5f9;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+            margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center;
         }
 
-        /* Animation for entrance */
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .app-container { width: 100%; max-width: 450px; animation: fadeIn 0.8s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .header { text-align: center; margin-bottom: 20px; }
+        .header img { width: 80px; height: 80px; border-radius: 18px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .header h1 { font-size: 1.4rem; margin: 10px 0 0; color: #1e293b; letter-spacing: -0.5px; }
+
+        .glass-card { 
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 24px; border-radius: 28px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.8);
         }
 
-        .container {
-            width: 100%;
-            max-width: 480px;
-            animation: slideUp 0.5s ease-out;
-        }
-
-        .card { 
-            background: var(--card-bg); 
-            padding: 24px; 
-            border-radius: 24px; 
-            shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-        }
-
-        h2 { 
-            text-align: center; 
-            margin: 0 0 24px 0; 
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
-            letter-spacing: -0.025em;
-        }
-
-        .input-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .input-group { margin-bottom: 16px; }
-        .full-width { grid-column: span 2; }
-
-        label { 
-            display: block; 
-            font-size: 0.75rem; 
-            font-weight: 700; 
-            text-transform: uppercase;
-            margin-bottom: 6px; 
-            color: #64748b;
-            padding-left: 4px;
-        }
+        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        
+        label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 6px; display: block; letter-spacing: 0.5px; }
 
         input, select { 
-            width: 100%; 
-            padding: 12px 16px; 
-            border: 2px solid var(--accent); 
-            border-radius: 12px; 
-            font-size: 1rem;
-            transition: all 0.2s;
-            outline: none;
-            background: var(--accent);
+            width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 14px; 
+            font-size: 1rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #f8fafc; outline: none; box-sizing: border-box;
         }
 
-        input:focus { 
-            border-color: var(--primary); 
-            background: white;
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        input:focus { border-color: var(--accent); background: white; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
+
+        .dashboard { 
+            background: var(--grad); color: white; padding: 25px; 
+            border-radius: 24px; margin-top: 25px; position: relative; overflow: hidden;
         }
 
-        .result-panel {
-            background: #1e293b;
-            color: white;
-            padding: 20px;
-            border-radius: 20px;
-            margin-top: 24px;
+        .dashboard::before {
+            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
         }
 
-        .res-row { 
-            display: flex; 
-            justify-content: space-between; 
-            margin-bottom: 10px; 
-            font-size: 0.9rem;
-            opacity: 0.9;
+        .stat-label { font-size: 0.75rem; text-transform: uppercase; opacity: 0.6; font-weight: 600; }
+        .main-price { font-size: 2.2rem; font-weight: 800; margin: 5px 0; color: #60a5fa; display: block; }
+        
+        .grid-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .stat-val { font-weight: 700; font-size: 1.1rem; display: block; }
+
+        .save-btn { 
+            width: 100%; padding: 18px; background: var(--accent); color: white; border: none; 
+            border-radius: 18px; font-weight: 800; font-size: 1rem; margin-top: 20px;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3); transition: all 0.2s;
         }
+        .save-btn:active { transform: scale(0.96); }
 
-        .divider { height: 1px; background: rgba(255,255,255,0.1); margin: 15px 0; }
-
-        .total-price { 
-            font-size: 1.5rem; 
-            font-weight: 800; 
-            color: #60a5fa;
-            text-align: right;
-            display: block;
-        }
-
-        .save-btn {
-            width: 100%;
-            padding: 16px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            font-weight: 700;
-            font-size: 1rem;
-            margin-top: 20px;
-            cursor: pointer;
-            transition: transform 0.1s;
-        }
-
-        .save-btn:active { transform: scale(0.98); }
-
-        .history-section {
-            margin-top: 24px;
-            width: 100%;
-        }
-
-        .history-item {
-            background: white;
-            padding: 16px;
-            border-radius: 16px;
-            margin-bottom: 12px;
-            border: 1px solid var(--accent);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .history-pill { 
+            background: white; padding: 12px 20px; border-radius: 50px; margin-top: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02); border: 1px solid #edf2f7;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="card">
-        <h2>Medium Duty Calc</h2>
+<div class="app-container">
+    <div class="header">
+        <img src="image_5.png" alt="MDR Logo">
+        <h1>MDR Calculator</h1>
+    </div>
+
+    <div class="glass-card">
+        <div class="input-row">
+            <div><label>Height (ft)</label><input type="number" id="h" placeholder="6" oninput="calculate()"></div>
+            <div><label>Sets (Pair)</label><input type="number" id="sets" value="1" oninput="calculate()"></div>
+        </div>
+        <div class="input-row">
+            <div><label>Length (ft)</label><input type="number" id="l" placeholder="5" oninput="calculate()"></div>
+            <div><label>Depth (ft)</label><input type="number" id="d" placeholder="2" oninput="calculate()"></div>
+        </div>
+        <div class="input-row">
+            <div><label>Levels</label><input type="number" id="levels" value="3" oninput="calculate()"></div>
+            <div><label>Rate / KG</label><input type="number" id="rate" value="100" oninput="calculate()"></div>
+        </div>
         
-        <div class="input-grid">
-            <div class="input-group">
-                <label>Height (ft)</label>
-                <input type="number" id="h" placeholder="6" oninput="calculate()">
-            </div>
-            <div class="input-group">
-                <label>Sets (Pair)</label>
-                <input type="number" id="sets" value="1" oninput="calculate()">
-            </div>
-            <div class="input-group">
-                <label>Length (ft)</label>
-                <input type="number" id="l" placeholder="5" oninput="calculate()">
-            </div>
-            <div class="input-group">
-                <label>Depth (ft)</label>
-                <input type="number" id="d" placeholder="2" oninput="calculate()">
-            </div>
-            <div class="input-group">
-                <label>Beam Level</label>
-                <input type="number" id="levels" value="3" oninput="calculate()">
-            </div>
-            <div class="input-group">
-                <label>Rate / KG</label>
-                <input type="number" id="rate" value="100" oninput="calculate()">
-            </div>
-            <div class="input-group full-width">
-                <label>Beam Thickness</label>
-                <select id="beamThick" onchange="calculate()">
-                    <option value="1.17">2 mm (1.17 kg/ft)</option>
-                    <option value="1.46" selected>2.5 mm (1.46 kg/ft)</option>
-                    <option value="1.75">3 mm (1.75 kg/ft)</option>
-                </select>
-            </div>
-            <div class="input-group full-width">
-                <label>Shelf Thickness</label>
-                <select id="shelfThick" onchange="calculate()">
-                    <option value="0.715">1 mm (0.715 kg/sqft)</option>
-                    <option value="1.2">1.2 mm (1.2 kg/sqft)</option>
-                </select>
+        <label>Beam Thickness</label>
+        <select id="beamThick" onchange="calculate()" style="margin-bottom:15px">
+            <option value="1.17">2 mm (Light Duty)</option>
+            <option value="1.46" selected>2.5 mm (Standard)</option>
+            <option value="1.75">3 mm (Heavy Duty)</option>
+        </select>
+
+        <label>Shelf Thickness</label>
+        <select id="shelfThick" onchange="calculate()">
+            <option value="0.715">1 mm Sheet</option>
+            <option value="1.2">1.2 mm Heavy Sheet</option>
+        </select>
+
+        <div class="dashboard">
+            <span class="stat-label">Total Estimate (Incl. 18% GST)</span>
+            <span class="main-price" id="price_gst">₹0</span>
+            
+            <div class="grid-stats">
+                <div><span class="stat-label">Net Weight</span><span class="stat-val" id="w_total">0 kg</span></div>
+                <div><span class="stat-label">GST Tax</span><span class="stat-val" id="gst_amt">₹0</span></div>
             </div>
         </div>
 
-        <div class="result-panel">
-            <div class="res-row"><span>Steel Weight</span> <span id="w_total">0.00 kg</span></div>
-            <div class="res-row"><span>Base Price</span> <span id="price_no_gst">₹0.00</span></div>
-            <div class="res-row" style="color:#fbbf24"><span>GST (18%)</span> <span id="gst_amt">₹0.00</span></div>
-            <div class="divider"></div>
-            <span style="font-size: 0.7rem; text-transform: uppercase; font-weight: 700; opacity: 0.7;">Final Quote</span>
-            <span class="total-price" id="price_gst">₹0.00</span>
-        </div>
-        
-        <button class="save-btn" onclick="saveHistory()">Save Estimate</button>
+        <button class="save-btn" onclick="saveHistory()">Save Quotation</button>
     </div>
 
-    <div class="history-section">
-        <h3 style="font-size: 1rem; padding-left: 8px;">Recent Quotes</h3>
-        <div id="historyList"></div>
-    </div>
+    <div id="historyList" style="margin-top:25px"></div>
 </div>
 
 <script>
@@ -233,21 +145,17 @@
         let finalPrice = priceBase + gst;
 
         document.getElementById('w_total').innerText = totalWeight.toFixed(2) + " kg";
-        document.getElementById('price_no_gst').innerText = "₹" + priceBase.toLocaleString('en-IN');
-        document.getElementById('gst_amt').innerText = "₹" + gst.toLocaleString('en-IN');
-        document.getElementById('price_gst').innerText = "₹" + finalPrice.toLocaleString('en-IN', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+        document.getElementById('gst_amt').innerText = "₹" + Math.round(gst).toLocaleString('en-IN');
+        document.getElementById('price_gst').innerText = "₹" + Math.round(finalPrice).toLocaleString('en-IN');
     }
 
     function saveHistory() {
         const total = document.getElementById('price_gst').innerText;
-        const h = document.getElementById('h').value;
-        const l = document.getElementById('l').value;
-        const d = document.getElementById('d').value;
-        if(!h || !l) return;
+        const info = `${document.getElementById('h').value}'x${document.getElementById('l').value}'`;
+        if(!document.getElementById('h').value) return;
         
-        const entry = { info: `${h}'x${l}'x${d}'`, total: total, date: new Date().toLocaleDateString() };
         let history = JSON.parse(localStorage.getItem('rackHistory')) || [];
-        history.unshift(entry);
+        history.unshift({ info, total, date: new Date().toLocaleDateString() });
         localStorage.setItem('rackHistory', JSON.stringify(history));
         renderHistory();
     }
@@ -256,12 +164,9 @@
         let history = JSON.parse(localStorage.getItem('rackHistory')) || [];
         const list = document.getElementById('historyList');
         list.innerHTML = history.slice(0, 3).map(i => `
-            <div class="history-item">
-                <div>
-                    <div style="font-weight: 700; font-size: 1.1rem; color: var(--primary);">${i.total}</div>
-                    <div style="font-size: 0.8rem; color: #64748b;">${i.info}</div>
-                </div>
-                <div style="font-size: 0.7rem; color: #94a3b8;">${i.date}</div>
+            <div class="history-pill">
+                <span style="font-weight:700; color:#1e293b">${i.info}</span>
+                <span style="font-weight:800; color:var(--accent)">${i.total}</span>
             </div>
         `).join('');
     }
@@ -269,4 +174,3 @@
 </script>
 </body>
 </html>
-
